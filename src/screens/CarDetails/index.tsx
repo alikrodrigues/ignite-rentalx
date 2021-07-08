@@ -28,8 +28,15 @@ import {
   Footer,
 } from "./styles";
 import { Button } from "../../components/Button";
+import { useNavigation } from "@react-navigation/native";
 
 export function CarDetails() {
+  const navigation = useNavigation();
+
+  function handleConfirm(){
+    navigation.navigate('Scheduling');
+  }
+
   return (
     <Container>
       <Header>
@@ -73,7 +80,7 @@ export function CarDetails() {
       </Content>
 
       <Footer>
-        <Button title="Click me" />
+        <Button title="Confirmar" onPress={handleConfirm} />
       </Footer>
     </Container>
   );
