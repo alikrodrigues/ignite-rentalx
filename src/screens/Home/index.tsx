@@ -2,28 +2,35 @@ import React from "react";
 import { StatusBar } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Car } from "../../components/Car";
+import { Load } from "../../components/Load";
 
 import Logo from "../../assets/logo.svg";
 
 import { Container, Header, TotalCars, HeaderContent, CarList } from "./styles";
 import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
+import { useState } from "react";
+import api from "../../services/api";
+import { CarDTO } from "../../dtos/CarDto";
 
 export function Home() {
+  const [cars, setCars] = useState();
   const navigation = useNavigation();
-  const carData = {
-    brand: "Audi",
-    name: "RS 5 Coupé",
-    urlImage:
-      "https://img2.gratispng.com/20180628/stg/kisspng-2018-audi-s5-3-0t-premium-plus-coupe-audi-rs5-2017-2018-audi-a5-coupe-5b35130451d959.0738564215302049323353.jpg",
-    rent: {
-      period: "Ao dia",
-      price: 120,
-    },
-  };
+  const [load, setLoad] = useState(true);
 
-  function handleCar() {
-    navigation.navigate("CarDetails");
+  function handleCar(car: CarDTO) {
+    navigation.navigate("CarDetails", { car });
   }
+
+  async function fetchCars() {
+    const response = await api.get("/cars");
+    setCars(response.data);
+    setLoad(false);
+  }
+
+  useEffect(() => {
+    fetchCars();
+  }, []);
 
   return (
     <Container>
@@ -39,12 +46,17 @@ export function Home() {
           <TotalCars>Total de 12 carros</TotalCars>
         </HeaderContent>
       </Header>
-
-      <CarList
-        data={[carData]}
-        renderItem={({ item }) => <Car data={item} onPress={handleCar} />}
-        keyExtractor={(item) => String(item)}
-      />
+      {load ? (
+        <Load />
+      ) : (
+        <CarList
+          data={cars}
+          renderItem={({ item }) => (
+            <Car data={item} onPress={() => handleCar(item)} />
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      )}
     </Container>
   );
 }
