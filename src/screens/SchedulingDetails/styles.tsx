@@ -142,7 +142,7 @@ export const RentalPriceLabel = styled.Text`
 export const RentalPriceDetails = styled.View`
   width: 100%;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
