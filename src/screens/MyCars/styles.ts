@@ -86,7 +86,7 @@ export const CarFooterTitle = styled.Text`
   font-size: ${RFValue(10)}px;
 `;
 
-export const CarFooterDate = styled.View`
+export const CarFooterDate = styled.Text`
   color: ${({ theme }) => theme.colors.title};
   font-family: ${({ theme }) => theme.fonts.primary_400};
   font-size: ${RFValue(13)}px;
